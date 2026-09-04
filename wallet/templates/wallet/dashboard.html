@@ -1,0 +1,44 @@
+{% extends "wallet/base.html" %}
+{% block title %}Wallet — Ledger{% endblock %}
+{% block content %}
+
+<div class="balance-card">
+  <p class="balance-label">CURRENT BALANCE</p>
+  <p class="balance-amount {% if balance < 0 %}negative{% endif %}">₹{{ balance|floatformat:2 }}</p>
+  <p class="balance-sub">
+    {% if spent_today > 0 %}Spent ₹{{ spent_today|floatformat:2 }} today{% else %}No spending recorded today{% endif %}
+  </p>
+</div>
+
+<div class="entries">
+  <div class="entries-head">
+    <h2>Transaction History</h2>
+  </div>
+
+  {% if transactions %}
+    {% for tx in transactions %}
+      <div class="entry">
+        <div class="entry-left">
+          <div class="entry-desc">{{ tx.description|default:tx.get_type_display }}</div>
+          <div class="entry-date">{{ tx.date|date:"d M Y" }}</div>
+        </div>
+        <div class="entry-right">
+          <span class="entry-amount {% if tx.type == 'income' %}income{% else %}spend{% endif %}">
+            {% if tx.type == 'income' %}+{% else %}−{% endif %}₹{{ tx.amount|floatformat:2 }}
+          </span>
+          <form action="{% url 'delete_transaction' tx.pk %}" method="post" onsubmit="return confirm('Delete this entry?');">
+            {% csrf_token %}
+            <button type="submit" class="del-btn" aria-label="Delete">✕</button>
+          </form>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <div class="empty">
+      <div class="big">Nothing here yet</div>
+      Add money to your wallet, then log expenses as you spend.
+    </div>
+  {% endif %}
+</div>
+
+{% endblock %}

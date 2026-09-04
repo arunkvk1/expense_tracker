@@ -1,0 +1,28 @@
+{% extends "wallet/base.html" %}
+{% block title %}{% if kind == "income" %}Add Money{% else %}Add Expense{% endif %} — Ledger{% endblock %}
+{% block content %}
+
+<div class="panel form-panel">
+  <p class="panel-title">
+    {% if kind == "income" %}ADD MONEY TO WALLET{% else %}RECORD AN EXPENSE{% endif %}
+  </p>
+
+  <form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="field-block">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}<p class="field-error">{{ field.errors|striptags }}</p>{% endif %}
+      </div>
+    {% endfor %}
+
+    <button type="submit" class="{% if kind == 'income' %}btn-income{% else %}btn-spend{% endif %}" style="width:100%">
+      {% if kind == "income" %}Add to Wallet{% else %}Deduct from Wallet{% endif %}
+    </button>
+  </form>
+</div>
+
+<a href="{% url 'dashboard' %}" class="back-link">← Back to wallet</a>
+
+{% endblock %}
