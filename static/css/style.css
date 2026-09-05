@@ -252,3 +252,38 @@ button{
 @media (max-width:420px){
   .balance-amount{font-size:36px;}
 }
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin: 25px 0;
+    flex-wrap: wrap;
+}
+
+.pagination a {
+    padding: 8px 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.pagination span {
+    padding: 8px 5px;
+}
+
+@media (max-width: 600px) {
+    .pagination {
+        gap: 6px;
+        margin: 20px 10px;
+    }
+
+    .pagination a {
+        padding: 7px 10px;
+        font-size: 14px;
+    }
+
+    .pagination span {
+        font-size: 14px;
+    }
+}
